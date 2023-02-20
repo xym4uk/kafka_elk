@@ -54,7 +54,7 @@ func main() {
 			log.Fatal("error occured", err)
 		}
 
-		logString := fmt.Sprintf("Дата: %s - событие: %s", myLog.Timestamp, myLog.Log)
+		logString := fmt.Sprintf("%s - %s", myLog.Timestamp, myLog.Log)
 		err := producer.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Value:          []byte(logString),
