@@ -1,4 +1,4 @@
-FROM golang:1.19-buster
+FROM golang:1.20-buster
 
 WORKDIR /app
 
@@ -10,8 +10,7 @@ COPY ./go.mod ./
 
 RUN go mod download
 
-RUN go mod download github.com/confluentinc/confluent-kafka-go/v2
+COPY ./cmd ./cmd
 
-COPY ./cmd ./
-
-COPY ./out ./out
+RUN go build -o consumer /app/cmd/consumer/consumer.go
+RUN go build -o producer /app/cmd/producer/producer.go

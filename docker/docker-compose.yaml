@@ -5,10 +5,6 @@ services:
     build:
       context: ./../
       dockerfile: ./docker/app/Dockerfile
-    volumes:
-      - ../out:/app/out
-    command:
-      - go build -o /app/out/consumer /app/consumer/consumer.go
 
   zookeeper:
     image: bitnami/zookeeper:3.8.1
