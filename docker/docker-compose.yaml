@@ -17,6 +17,8 @@ services:
       ALLOW_ANONYMOUS_LOGIN: "yes"
     ports:
       - "2181:2181"
+    volumes:
+      - zk:/bitnami/zookeeper
 
   kafka:
     image: bitnami/kafka:3.4.0
@@ -131,6 +133,8 @@ volumes:
     driver: local
   elasticsearch:
   setup:
+  zk:
+    driver: local
 
 networks:
   elk:
