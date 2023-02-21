@@ -25,7 +25,7 @@ func main() {
 	}
 
 	producer, err := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost",
+		"bootstrap.servers": "kafka:9093",
 	})
 	if err != nil {
 		log.Fatal(err)

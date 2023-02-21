@@ -9,7 +9,7 @@ import (
 
 func main() {
 	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost",
+		"bootstrap.servers": "kafka:9093",
 		"group.id":          "myGroup",
 		"auto.offset.reset": "earliest",
 	})
