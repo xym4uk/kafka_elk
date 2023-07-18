@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/bxcodec/faker/v4"
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
@@ -10,8 +11,8 @@ import (
 )
 
 type MyLog struct {
-	Timestamp string `faker:"timestamp"`
-	Log       string `faker:"sentence"`
+	Timestamp string `faker:"timestamp" json:"timestamp,omitempty"`
+	Log       string `faker:"sentence" json:"value,omitempty"`
 }
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 	}
 
 	producer, err := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": "kafka:9093",
+		"bootstrap.servers": "localhost:9092",
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -39,7 +40,7 @@ func main() {
 				if ev.TopicPartition.Error != nil {
 					fmt.Printf("Delivery failed: %v\n", ev.TopicPartition)
 				} else {
-					fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
+					fmt.Printf("Delivered message %s to %v\n", string(ev.Value), ev.TopicPartition)
 				}
 			}
 		}
@@ -54,10 +55,13 @@ func main() {
 			log.Fatal("error occured", err)
 		}
 
-		logString := fmt.Sprintf("%s - %s", myLog.Timestamp, myLog.Log)
+		logJson, err1 := json.Marshal(myLog)
+		if err1 != nil {
+			log.Fatal(err)
+		}
 		err := producer.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
-			Value:          []byte(logString),
+			Value:          logJson,
 		}, nil)
 		if err != nil {
 			log.Fatal(err)
