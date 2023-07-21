@@ -13,6 +13,7 @@ import (
 type MyLog struct {
 	Timestamp string `faker:"timestamp" json:"timestamp,omitempty"`
 	Log       string `faker:"sentence" json:"value,omitempty"`
+	Type      string `faker:"oneof: info, warning, error"`
 }
 
 func main() {
